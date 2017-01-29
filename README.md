@@ -1,1 +1,0 @@
-# equitysplit.github.io
