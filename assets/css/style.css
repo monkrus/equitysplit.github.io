@@ -21,6 +21,10 @@
 		padding: 0px;
 	} 
 
+html {
+	position: relative;
+}
+
 body { 
 	background: #ffffff; 
 	margin: 0; 
@@ -28,6 +32,7 @@ body {
 	color: #384452;
 	font-family: 'Lato', sans-serif;
 	font-weight: 400;
+	margin-bottom: 200px;
 	}
 
 h1, h2, h3, h4, h5, h6 {
@@ -336,15 +341,15 @@ a:focus {
 	min-height: 450px;
 	width: 100%;
 	
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
-    -o-background-size: 100%;
-    background-size: 100%;
+  -webkit-background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #twrap i {
@@ -376,6 +381,11 @@ a:focus {
 	padding-top: 60px;
 	padding-bottom: 60px;
 	background: #384452;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 220px;
 }
 
 #footerwrap p {
