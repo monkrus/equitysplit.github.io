@@ -507,3 +507,11 @@ csmall2 {
 	padding-right: 15px;
 	font-size: 18px;
 }
+
+.centerImage {
+	position: absolute;
+	margin-left: 45%;
+	margin-top: 30%;
+	left: 0px;
+	top: 0px;
+}
