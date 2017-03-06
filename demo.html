@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+    <title>Equity Split</title>
+    <meta property="og:url" content="http://www.equity-split.com/blog.html">
+    <meta property="og:description" content="startup entrepreneur equity">
+    <meta property="og:description" content="startup entrepreneur equity">
+    <meta name="author" content="Arpad Asztalos">
+    <meta property="og:image" content="http://s11.postimg.org/5qh4fb3g3/equity_split.png">
+
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="assets/js/modernizr.js"></script>
+    <!-- An's code -->
+        <title>Excel Workbook</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="">
+        <meta name="author" content="Anh Tran">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+        <script src="canvas.min.js"></script>
+
+        <style>
+            table.tableClass {
+                float: left;
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+                margin-bottom: 10px;
+            }
+            table tr th {
+                text-align: left;
+            }
+
+            .positionClass {
+                width: 26%;
+            }
+
+            .boldClass {
+                font-weight: bold;
+            }
+
+            .chartSizeClass {
+                height: 400px;
+                width: 100%;
+            }
+        </style>
+
+        <script type="text/javascript">
+            function calculation(form) {
+                /* member 1 */
+                var opportunityCostPerHour = calculateOpportunityCostPerHour(form.member1_ocs.value);
+                var theoreticalContribution = calculateTheoreticalContribution(opportunityCostPerHour, form.member1_hw.value);
+                var shareCash = calculateShareCash(form.member1_cc.value, theoreticalContribution);
+                form.member1_ysc.value = Number(shareCash).toFixed(2);
+
+                /* member 2 */
+                opportunityCostPerHour = calculateOpportunityCostPerHour(form.member2_ocs.value);
+                theoreticalContribution = calculateTheoreticalContribution(opportunityCostPerHour, form.member2_hw.value);
+                shareCash = calculateShareCash(form.member2_cc.value, theoreticalContribution);
+                form.member2_ysc.value = Number(shareCash).toFixed(2);
+
+                /* member 3 */
+                opportunityCostPerHour = calculateOpportunityCostPerHour(form.member3_ocs.value);
+                theoreticalContribution = calculateTheoreticalContribution(opportunityCostPerHour, form.member3_hw.value);
+                shareCash = calculateShareCash(form.member3_cc.value, theoreticalContribution);
+                form.member3_ysc.value = Number(shareCash).toFixed(2);
+
+                /* member 4 */
+                opportunityCostPerHour = calculateOpportunityCostPerHour(form.member4_ocs.value);
+                theoreticalContribution = calculateTheoreticalContribution(opportunityCostPerHour, form.member4_hw.value);
+                shareCash = calculateShareCash(form.member4_cc.value, theoreticalContribution);
+                form.member4_ysc.value = Number(shareCash).toFixed(2);
+
+                var total = parseFloat(form.member1_ysc.value) + parseFloat(form.member2_ysc.value)
+                        + parseFloat(form.member3_ysc.value) + parseFloat(form.member4_ysc.value);
+                form.member1_ysp.value = Number((form.member1_ysc.value * 100) / total).toFixed(2);
+                form.member2_ysp.value = Number((form.member2_ysc.value * 100) / total).toFixed(2);
+                form.member3_ysp.value = Number((form.member3_ysc.value * 100) / total).toFixed(2);
+                form.member4_ysp.value = Number((form.member4_ysc.value * 100) / total).toFixed(2);
+
+                showPieGraph(parseFloat(form.member1_ysc.value), parseFloat(form.member2_ysc.value),
+                        parseFloat(form.member3_ysc.value),parseFloat(form.member4_ysc.value));
+
+                showBarGraph(parseFloat(form.member1_ysc.value), parseFloat(form.member2_ysc.value),
+                        parseFloat(form.member3_ysc.value),parseFloat(form.member4_ysc.value));
+            }
+
+            function calculateOpportunityCostPerHour(opportunityCostPerSalary) {
+                return (opportunityCostPerSalary/52.1429)/37.5;
+            }
+
+            function calculateTheoreticalContribution(opportunityCostPerHour, hourWorked) {
+                return opportunityCostPerHour * hourWorked;
+            }
+
+            function calculateShareCash(contributionCash, theoreticalContribution) {
+                return (contributionCash * 4) + theoreticalContribution;
+            }
+
+            function showPieGraph(shareCash1, shareCash2, shareCash3, shareCash4)
+            {
+                var chart = new CanvasJS.Chart("pieChartContainer",
+                        {
+                            theme: "theme2",
+                            title:{
+                                text: "Equity Split Pie Chart"
+                            },
+                            data: [
+                                {
+                                    type: "pie",
+                                    showInLegend: true,
+                                    toolTipContent: "{y} - #percent %",
+                                    legendText: "{indexLabel}",
+                                    dataPoints: [
+                                        {  y: shareCash1, indexLabel: "Member 1" },
+                                        {  y: shareCash2, indexLabel: "Member 2" },
+                                        {  y: shareCash3, indexLabel: "Member 3" },
+                                        {  y: shareCash4, indexLabel: "Member 4"}
+                                    ]
+                                }
+                            ]
+                        });
+                chart.render();
+            };
+
+            function showBarGraph(shareCash1, shareCash2, shareCash3, shareCash4)
+            {
+                var chart = new CanvasJS.Chart("barChartContainer",
+                        {
+                            title: {
+                                text: "Equity Split Bar Chart "
+                            },
+
+                            data: [
+                                {
+                                    type: "bar",
+
+                                    dataPoints: [
+                                        { x: 10, y: shareCash1, label: "Member 1" },
+                                        { x: 20, y: shareCash2, label: "Member 2" },
+                                        { x: 30, y: shareCash3, label: "Member 3" },
+                                        { x: 40, y: shareCash4, label: "Member 4" }
+                                    ]
+                                }
+                            ]
+                        });
+                chart.render();
+            };
+        </script>
+
+
+</head>
+
+<body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1766789033574076";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#back-to-top" class="navbar-brand" ><img class="pull-left" id="logo" src="assets/img/es_full_logo_bg.png"></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="index.html#about">ABOUT</a></li>
+                <li><a href="index.html#contact">CONTACT</a></li>
+                <li class="active"><a href="blog.html">BLOG</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+
+<br><br><br><br><br><br>
+<body>
+<form id="formID" method="post">
+    <div>
+
+
+        <div>
+            <table class="tableClass" border="1" cellpadding="8">
+                <tr>
+                    <th>Position</th>
+                    <th>Member1</th>
+                    <th>Member2</th>
+                    <th>Member3</th>
+                    <th>Member4</th>
+                </tr>
+
+                <tr>
+                    <th class="positionClass">Name</th>
+                    <td><input type="text" name="member1_name"/></td>
+                    <td><input type="text" name="member2_name"/></td>
+                    <td><input type="text" name="member3_name"/></td>
+                    <td><input type="text" name="member4_name"/></td>
+                </tr>
+
+                <tr>
+                    <th>Opportunity Cost / Salary ($)</th>
+                    <td><input type="text" name="member1_ocs"/></td>
+                    <td><input type="text" name="member2_ocs"/></td>
+                    <td><input type="text" name="member3_ocs"/></td>
+                    <td><input type="text" name="member4_ocs"/></td>
+                </tr>
+
+                <tr>
+                    <th>Hours Worked</th>
+                    <td><input type="text" name="member1_hw"/></td>
+                    <td><input type="text" name="member2_hw"/></td>
+                    <td><input type="text" name="member3_hw"/></td>
+                    <td><input type="text" name="member4_hw"/></td>
+                </tr>
+
+                <tr>
+                    <th>Invested Cash ($)</th>
+                    <td><input type="text" name="member1_ic"/></td>
+                    <td><input type="text" name="member2_ic"/></td>
+                    <td><input type="text" name="member3_ic"/></td>
+                    <td><input type="text" name="member4_ic"/></td>
+                </tr>
+
+                <tr>
+                    <th>Contribution - Cash ($)</th>
+                    <td><input type="text" name="member1_cc"/></td>
+                    <td><input type="text" name="member2_cc"/></td>
+                    <td><input type="text" name="member3_cc"/></td>
+                    <td><input type="text" name="member4_cc"/></td>
+                </tr>
+
+                <tr>
+                    <th>Date Joined The Project</th>
+                    <td><input type="text" name="member1_djtp"/></td>
+                    <td><input type="text" name="member2_djtp"/></td>
+                    <td><input type="text" name="member3_djtp"/></td>
+                    <td><input type="text" name="member4_djtp"/></td>
+                </tr>
+
+
+
+            </table>
+
+            <table class="tableClass" border="1" cellpadding="8">
+                <tr>
+                    <th class="positionClass">Your Share ($)</th>
+                    <td><input type="text" name="member1_ysc"/></td>
+                    <td><input type="text" name="member2_ysc"/></td>
+                    <td><input type="text" name="member3_ysc"/></td>
+                    <td><input type="text" name="member4_ysc"/></td>
+                </tr>
+
+                <tr>
+                    <th>Your Share (%)</th>
+                    <td><input type="text" name="member1_ysp"/></td>
+                    <td><input type="text" name="member2_ysp"/></td>
+                    <td><input type="text" name="member3_ysp"/></td>
+                    <td><input type="text" name="member4_ysp"/></td>
+
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <input type="button" name="calculationID" value="Calculation" class="boldClass" onclick="calculation(formID)" />
+        </div>
+
+    </div>
+</form>
+<br/>
+<hr/>
+<div id="pieChartContainer" class="chartSizeClass">
+</div>
+<br/>
+<hr/>
+<div id="barChartContainer" class="chartSizeClass">
+</div>
+
+</body>
+</html>
